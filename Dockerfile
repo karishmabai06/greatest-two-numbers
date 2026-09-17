@@ -2,6 +2,12 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-ENTRYPOINT ["python", "greatest.py"]
+EXPOSE 5000
+
+CMD ["python", "greatest.py"]
