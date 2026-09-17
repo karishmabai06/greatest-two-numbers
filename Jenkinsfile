@@ -1,19 +1,32 @@
 pipeline {
     agent any
 
+    environment {
+        // Your Python path on Windows
+        PYTHON = 'C:/Users/Karis/AppData/Local/Programs/Python/Python313/python.exe'
+    }
+
+    parameters {
+        string(name: 'NUM1', defaultValue: '10', description: 'First number')
+        string(name: 'NUM2', defaultValue: '20', description: 'Second number')
+        string(name: 'NUM3', defaultValue: '30', description: 'Third number')
+    }
+
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
-                echo 'Building Greatest of Two Numbers Program...'
-                bat 'python greatest.py'
+                checkout scm
             }
         }
 
-        stage('Test') {
+        stage('Run Python Script') {
             steps {
-                echo 'Testing Greatest of Two Numbers Program...'
-                bat 'python test_greatest.py'
+                script {
+                    // Run the Python program with parameters
+                    bat "\"%PYTHON%\" greatest_of_three.py ${params.NUM1} ${params.NUM2} ${params.NUM3}"
+                }
             }
         }
     }
 }
+
